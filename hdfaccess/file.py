@@ -296,18 +296,47 @@ class hdf_file(object):    # rare case of lower case?!
                 del self.hdf.attrs['dependency_tree']
         else:
             self.hdf.attrs['dependency_tree'] = \
-                base64.encodestring(
+                base64.encodebytes(  # changed from encodestring to encodebytes
                     zlib.compress(simplejson.dumps(dependency_tree).encode('ascii')))
 
     @property
     def duration(self):
-        '''
+        """
         Accessor for the root-level 'duration' attribute.
-
-        :rtype: float or None
-        '''
+        Falls back to computing duration from 'UTC System Time' if not set.
+        """
         duration = self.hdf.attrs.get('duration')
-        return float(duration) if duration else None
+        if duration:
+            return float(duration)
+    
+        # Attempt to compute duration from 'UTC System Time'
+        try:
+            utc_param = self.get_param("UTC System Time", valid_only=True)
+            if utc_param and hasattr(utc_param, 'array') and utc_param.array.count() > 0:
+                raw_times = [t for t in utc_param.array if t is not None]
+                if raw_times:
+                    dt_list = []
+                    for time_str in raw_times:
+                        # Decode if bytes
+                        if isinstance(time_str, bytes):
+                            time_str = time_str.decode("utf-8")
+    
+                        try:
+                            dt_list.append(datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S.%fZ"))
+                        except ValueError:
+                            pass
+                        
+                    if dt_list:
+                        computed = (max(dt_list) - min(dt_list)).total_seconds()
+                        if computed > 0:
+                            self.duration = computed
+                            return computed
+        except Exception:
+            # No logger, so just fail silently or print
+            print("Failed to compute duration from 'UTC System Time'")
+            return None
+    
+        return None
 
     @duration.setter
     def duration(self, duration):

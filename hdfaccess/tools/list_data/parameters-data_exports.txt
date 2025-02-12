@@ -55,14 +55,14 @@ Acceleration Across Track
 Acceleration Along Track
 Acceleration Forwards
 Acceleration Lateral
-Acceleration Lateral Offset Removed
+Acceleration Lateral
 Acceleration Lateral Smoothed
 Acceleration Lateral Unfiltered
 Acceleration Longitudinal
-Acceleration Longitudinal Offset Removed
+Acceleration Longitudinal
 Acceleration Longitudinal Unfiltered
 Acceleration Normal
-Acceleration Normal Offset Removed
+Acceleration Normal
 Acceleration Normal Unfiltered
 Acceleration Sideways
 Acceleration Vertical
@@ -102,7 +102,7 @@ Altitude Radio
 Altitude Radio (C)
 Altitude Radio (L)
 Altitude Radio (R)
-Altitude Radio Offset Removed
+Altitude Radio
 Altitude Rate
 Altitude STD
 Altitude STD (MMR1)

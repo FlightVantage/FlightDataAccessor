@@ -7,7 +7,7 @@
 28 VDC Bus (*)
 28 VDC Standby Bus
 Acceleration Lateral
-Acceleration Lateral Offset Removed
+Acceleration Lateral
 Acceleration Longitudinal
 Acceleration Normal
 AC Emergency Bus Fail
